@@ -1,0 +1,52 @@
+name: Add-Providers
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  workflow_dispatch:
+    # inputs:
+      # tag:
+      #   type: string
+      #   description: Tag version of published docker image.
+      #   required: true
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+
+      - name: Terraform
+        run: |
+          # install terraform
+          sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+          sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install terraform=1.6.5-1
+
+          terraform init
+
+          cp -r -v -n .terraform/providers/ ./terraform-providers
+          git add .
+          git commmit -m "Add providers"
+          git push
