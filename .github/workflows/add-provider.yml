@@ -46,7 +46,7 @@ jobs:
 
           terraform init
 
-          cp -r -v -n .terraform/providers/ ./terraform-providers
-          git add .
-          git commmit -m "Add providers"
-          git push
+          cp -r -v -n .terraform/providers/registry.terraform.io ./terraform-providers
+          sudo git add .
+          sudo git commmit -m "Add providers"
+          sudo git push
