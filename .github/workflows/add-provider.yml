@@ -49,6 +49,8 @@ jobs:
           cp -r -v -n .terraform/providers/registry.terraform.io ./terraform-providers
           git config user.name github-actions
           git config user.email github-actions@github.com
+          rm .terraform.lock.hcl
+          rm -rf .terraform/
           git add ./terraform-providers
           git commit -m "Add providers"
           git push
