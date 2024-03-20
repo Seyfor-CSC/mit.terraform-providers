@@ -50,5 +50,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commmit -m "Add providers"
+          git commit -m "Add providers"
           git push
